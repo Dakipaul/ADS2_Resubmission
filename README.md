@@ -32,6 +32,28 @@ data_selection = data_selection[data_selection['Country Name'].isin(
 # Select the indicators
 data_selection = data_selection[data_selection['Indicator Name'].isin(
     ["Foreign direct investment, net inflows (% of GDP)", 'Urban population growth (annual %)', "Population growth (annual %)"])]
+def corr_lack(country):
+    """This function plots a heatmap of the correlation between the selected indicators for a given country."""
+
+    cor_indi_names = ["Population growth (annual %)", "Urban population growth (annual %)", "Foreign direct investment, net inflows (% of GDP)",
+                      "CO2 emissions (kt)", "Mortality rate, under-5 (per 1,000 live births)", "Access to electricity (% of population)", "Agricultural land (sq. km)"]
+    corr_years = ['2013', '2014', '2015', '2016', '2017', '2018', '2019']
+
+    selected_df = dataframe[dataframe["Country Name"] == country].set_index("Indicator Name")
+
+    filtered_data = selected_df.loc[cor_indi_names, corr_years].transpose()
+
+    # Heatmap plot
+    plt.title(country, fontsize=14)
+    sns.heatmap(filtered_data.corr(), linecolor='grey',
+                linewidths=0.1, annot=True)
+    plt.show()
+
+
+corr_lack("Brazil")
+
+corr_lack("United Arab Emirates")
+
 
 fdi_data = data_selection[data_selection['Indicator Name']
                           == "Foreign direct investment, net inflows (% of GDP)"]
